@@ -27,6 +27,15 @@ export default class GameScene extends Phaser.Scene {
     this.load.image('potion_black', 'assets/sprites/Round Potion - BLACK - 0000.png');
     this.load.image('potion_yellow', 'assets/sprites/Small Vial - YELLOW - 0000.png');
     this.load.image('potion_purple', 'assets/sprites/Large Jar - PURPLE - 0000.png');
+    this.load.image('potion_clear', 'assets/sprites/Encased Potion - BROWN_GREEN - 0000.png');
+    this.load.image('potion_white', 'assets/sprites/Large Jar - TEAL - 0000.png');
+    this.load.image('potion_white2', 'assets/sprites/Large Bottle - BLACK - 0000.png');
+    this.load.image('potion_silver', 'assets/sprites/Small Vial - ORANGE - 0000.png');
+    this.load.image('potion_orange', 'assets/sprites/Encased Potion - LIME_PURPLE - 0000.png');
+    this.load.image('potion_ltblue', 'assets/sprites/Large Bottle - RED - 0000.png');
+    this.load.image('potion_ltgrey', 'assets/sprites/Bubbly Brew Bottle - GREEN - 0000.png');
+    this.load.image('potion_grey', 'assets/sprites/Bubbly Brew Bottle - BROWN - 0000.png');
+    this.load.image('potion_beige', 'assets/sprites/Large Bottle - RED - 0000.png');
   }
 
   create() {
@@ -128,8 +137,8 @@ export default class GameScene extends Phaser.Scene {
 
     // --- Scrollbar track + thumb (visual feedback) ---
     const trackX = PANEL_X + PANEL_W - 8;
-    const trackY = PANEL_Y + 32;
-    const trackH = VISIBLE_H - 38;
+    const trackY = PANEL_Y + 85;
+    const trackH = VISIBLE_H - 77;
 
     this.add.rectangle(trackX, trackY, 4, trackH, 0x1a0f00).setOrigin(0.5, 0);
 
