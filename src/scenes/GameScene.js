@@ -65,25 +65,96 @@ export default class GameScene extends Phaser.Scene {
   // ─── Inventory panel ────────────────────────────────────────────────────────
 
   _drawInventoryPanel() {
-    const panelW = 220, panelH = ELEMENTS.length * SLOT_HEIGHT + 40;
-    const panelX = INVENTORY_X - panelW / 2;
-    const panelY = 80;
+    const PANEL_X    = 75;
+    const PANEL_Y    = 30;
+    const PANEL_W    = 220;
+    const VISIBLE_H  = 420;   // height of the visible window
+    const CONTENT_H  = ELEMENTS.length * SLOT_HEIGHT;
 
-    this.add.image(panelX - 30, panelY - 30, 'inventory')
-      .setScale(.88).setOrigin(0);
-    
-    // this.add.rectangle(panelX, panelY, panelW, panelH, 0x2d1b00).setOrigin(0)
-    //   .setStrokeStyle(3, 0xd4a017);
+    this.add.image(PANEL_X - 30, PANEL_Y + 30, 'inventory')
+      .setOrigin(0, 0)
+      .setScale(.85);
 
-    // this.add.text(INVENTORY_X, panelY + 16, 'INVENTÁRIO', {
-    //   fontSize: '13px', fontFamily: 'monospace', color: '#f5d742', fontStyle: 'bold',
-    // }).setOrigin(0.5, 0);
+    // --- Scrollable container (holds all slots) ---
+    this._inventoryContainer = this.add.container(0, 0);
 
-    // Slot backgrounds
     ELEMENTS.forEach((_, i) => {
-      const sy = INVENTORY_Y + i * SLOT_HEIGHT + 7;
-      this.add.rectangle(panelX + 30, sy, panelW - 45, SLOT_HEIGHT - 5, 0x4a3000)
-        .setOrigin(0).setStrokeStyle(1, 0x8b6914);
+      const sy = INVENTORY_Y + i * SLOT_HEIGHT;
+      const bg = this.add.rectangle(PANEL_X + 25, sy, PANEL_W - 45, SLOT_HEIGHT - 5, 0x4a3000)
+        .setOrigin(0)
+        .setStrokeStyle(1, 0x8b6914);
+      this._inventoryContainer.add(bg);
+    });
+
+    // --- Mask: clips the container to the panel bounds ---
+    const maskShape = this.add.graphics();
+    maskShape.fillRect(PANEL_X + 20, PANEL_Y + 85, PANEL_W - 40, VISIBLE_H - 85);    
+    maskShape.setAlpha(0);
+    this._inventoryContainer.setMask(
+      new Phaser.Display.Masks.GeometryMask(this, maskShape)
+    );
+
+    // --- Scroll state ---
+    const maxScroll = Math.max(0, CONTENT_H - VISIBLE_H + 77);
+    let scrollY = 0;
+
+    const applyScroll = (dy) => {
+      scrollY = Phaser.Math.Clamp(scrollY + dy, 0, maxScroll);
+      this._inventoryContainer.setY(-scrollY);
+      // Keep element icons/labels in sync — they're added to the container
+      // inside _createElementSlot(), so they move automatically.
+    };
+
+    // Mouse wheel
+    this.input.on('wheel', (_ptr, _objs, _dx, dy) => applyScroll(dy * 0.6));
+
+    // Touch / click-drag on the panel
+    let dragStartY = null;
+    let dragStartScroll = 0;
+
+    this.input.on('pointerdown', (p) => {
+      if (p.x < PANEL_X + PANEL_W) {
+        dragStartY     = p.y;
+        dragStartScroll = scrollY;
+      }
+    });
+
+    this.input.on('pointermove', (p) => {
+      if (dragStartY === null || !p.isDown) return;
+      applyScroll(dragStartScroll + (dragStartY - p.y) - scrollY);
+    });
+
+    this.input.on('pointerup', () => { dragStartY = null; });
+
+    // --- Scrollbar track + thumb (visual feedback) ---
+    const trackX = PANEL_X + PANEL_W - 8;
+    const trackY = PANEL_Y + 32;
+    const trackH = VISIBLE_H - 38;
+
+    this.add.rectangle(trackX, trackY, 4, trackH, 0x1a0f00).setOrigin(0.5, 0);
+
+    const thumbH    = Math.max(30, (VISIBLE_H / CONTENT_H) * trackH);
+    const scrollThumb = this.add.rectangle(trackX, trackY, 6, thumbH, 0xd4a017)
+      .setOrigin(0.5, 0);
+
+    // Update thumb position whenever scroll changes
+    this._updateScrollThumb = () => {
+      const ratio = maxScroll > 0 ? scrollY / maxScroll : 0;
+      scrollThumb.setY(trackY + ratio * (trackH - thumbH));
+    };
+
+    // Hook applyScroll to also update the thumb
+    const _baseApply = applyScroll;
+    // Patch: call thumb update after every scroll
+    this.input.off('wheel');
+    this.input.on('wheel', (_ptr, _objs, _dx, dy) => {
+      _baseApply(dy * 0.6);
+      this._updateScrollThumb();
+    });
+    this.input.on('pointermove', (p) => {
+      if (dragStartY === null || !p.isDown) return;
+      _baseApply(dragStartScroll + (dragStartY - p.y) - scrollY);
+      this._updateScrollThumb();
     });
   }
 
@@ -93,7 +164,6 @@ export default class GameScene extends Phaser.Scene {
     const x = INVENTORY_X;
     const y = INVENTORY_Y + index * SLOT_HEIGHT + SLOT_HEIGHT / 2;
 
-    // Sprite    
     const icon = this.add.sprite(x - 30, y, element.sprite)
       .setInteractive({ useHandCursor: true });
 
@@ -101,11 +171,10 @@ export default class GameScene extends Phaser.Scene {
       fontSize: '11px', fontFamily: 'monospace', color: '#eeeeee', wordWrap: { width: 90 },
     }).setOrigin(0, 0.5);
 
-    // Tooltip on hover
+    this._inventoryContainer.add([icon, label]);
+
     icon.on('pointerover', () => this._showTooltip(element.label, x + 50, y));
     icon.on('pointerout',  () => this._hideTooltip());
-
-    // Drag start — clone the icon so the original stays in the inventory
     icon.on('pointerdown', (pointer) => this._startDrag(pointer, element, x - 30, y));
 
     this._elementObjects.push({ element, icon, label });
