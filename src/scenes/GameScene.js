@@ -2,7 +2,7 @@ import { ELEMENTS, findRecipe } from '../data/substances.js';
 
 const INVENTORY_X   = 185;   // center-x of the inventory panel
 const INVENTORY_Y   = 110;    // top of first slot
-const SLOT_HEIGHT   = 60;
+const SLOT_HEIGHT   = 55;
 const CAULDRON_X    = 540;
 const CAULDRON_Y    = 350;
 const CAULDRON_R    = 90;    // drop-zone radius
@@ -16,7 +16,10 @@ export default class GameScene extends Phaser.Scene {
 
   preload() {    
     this.load.image('lab_bg',      'assets/sprites/bg.png');
+    this.load.image('inventory',      'assets/sprites/inventory.png');
     this.load.image('cauldron',    'assets/sprites/cauldron.png');
+    this.load.image('bubbles',    'assets/sprites/bubbles.png');
+    this.load.image('particle', 'assets/sprites/particle.png');
     this.load.image('potion_green', 'assets/sprites/Bubbly Brew Bottle - GREEN - 0000.png');
     this.load.image('potion_blue', 'assets/sprites/Big Vial - BLUE - 0000.png');
     this.load.image('potion_red', 'assets/sprites/Encased Potion - BROWN_RED - 0000.png');
@@ -66,17 +69,20 @@ export default class GameScene extends Phaser.Scene {
     const panelX = INVENTORY_X - panelW / 2;
     const panelY = 80;
 
-    this.add.rectangle(panelX, panelY, panelW, panelH, 0x2d1b00).setOrigin(0)
-      .setStrokeStyle(3, 0xd4a017);
+    this.add.image(panelX - 30, panelY - 30, 'inventory')
+      .setScale(.88).setOrigin(0);
+    
+    // this.add.rectangle(panelX, panelY, panelW, panelH, 0x2d1b00).setOrigin(0)
+    //   .setStrokeStyle(3, 0xd4a017);
 
-    this.add.text(INVENTORY_X, panelY + 16, 'INVENTÁRIO', {
-      fontSize: '13px', fontFamily: 'monospace', color: '#f5d742', fontStyle: 'bold',
-    }).setOrigin(0.5, 0);
+    // this.add.text(INVENTORY_X, panelY + 16, 'INVENTÁRIO', {
+    //   fontSize: '13px', fontFamily: 'monospace', color: '#f5d742', fontStyle: 'bold',
+    // }).setOrigin(0.5, 0);
 
     // Slot backgrounds
     ELEMENTS.forEach((_, i) => {
-      const sy = INVENTORY_Y + i * SLOT_HEIGHT + 10;
-      this.add.rectangle(panelX + 10, sy, panelW - 20, SLOT_HEIGHT - 10, 0x4a3000)
+      const sy = INVENTORY_Y + i * SLOT_HEIGHT + 7;
+      this.add.rectangle(panelX + 30, sy, panelW - 45, SLOT_HEIGHT - 5, 0x4a3000)
         .setOrigin(0).setStrokeStyle(1, 0x8b6914);
     });
   }
@@ -156,7 +162,9 @@ export default class GameScene extends Phaser.Scene {
     this.add.image(CAULDRON_X, CAULDRON_Y, 'cauldron')
       .setScale(0.2);
 
-    // Drop zone indicator (invisible, just for reference in debug)
+    this.add.image(CAULDRON_X, CAULDRON_Y - 57, 'bubbles')
+      .setScale(0.27);
+      // Drop zone indicator (invisible, just for reference in debug)
     // this.add.circle(CAULDRON_X, CAULDRON_Y, CAULDRON_R, 0xffffff, 0).setStrokeStyle(1, 0x333333);
 
     // Label for ingredients in cauldron
@@ -184,16 +192,18 @@ export default class GameScene extends Phaser.Scene {
   }
 
   _bubbleAnimation(fromX, fromY) {
-    const bubble = this.add.circle(fromX, fromY, 8, 0x00ff88, 0.8).setDepth(5);
-    this.tweens.add({
-      targets: bubble,
-      x: CAULDRON_X,
-      y: CAULDRON_Y,
-      alpha: 0,
-      duration: 400,
-      ease: 'Quad.In',
-      onComplete: () => bubble.destroy(),
+    const emitter = this.add.particles(fromX, fromY, 'particle', {
+      speed: { min: 40, max: 80 },
+      angle: { min: 200, max: 340 },   // shoot upward/sideways
+      scale: { start: 0.6, end: 0 },
+      alpha: { start: 1, end: 0 },
+      tint: [0x00ff88, 0x44aaff, 0xffd700],
+      lifespan: 800,
+      quantity: 8,
+      emitting: false,   // fire once, don't loop
     });
+
+    emitter.explode();   // burst on drop
   }
 
   // ─── Brew button ─────────────────────────────────────────────────────────────

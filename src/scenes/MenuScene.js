@@ -32,10 +32,10 @@ export default class MenuScene extends Phaser.Scene {
     }).setOrigin(0.5);
 
     // --- Wizard sprite ---    
-    this.add.sprite(350, 300, 'wizard').setScale(0.5).flipX = true;
+    this.add.sprite(390, 340, 'wizard').setScale(0.5).flipX = true;
 
     // --- Cat sprite ---    
-    this.add.sprite(230, 370, 'cat').setScale(0.15);
+    this.add.sprite(260, 410, 'cat').setScale(0.15);
 
     // --- Buttons ---
     this._makeButton(width - 180, 260, 'Jogar',  () => this.scene.start('GameScene'));
