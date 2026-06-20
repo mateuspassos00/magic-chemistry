@@ -15,7 +15,9 @@ export default class MenuScene extends Phaser.Scene {
 
   create() {
     // Initialise shared state in the registry so all scenes can access it.
-    this.registry.set('gameState', new GameState());
+    if (!this.registry.get('gameState')) {
+      this.registry.set('gameState', new GameState());
+    }
 
     const { width, height } = this.scale;
 
