@@ -76,7 +76,7 @@ export default class GameScene extends Phaser.Scene {
 
     // --- HUD ---
     this._scoreText = this.add.text(16, height - 28,
-      `Descobertas: ${this._state.discoveredCount}  |  Pontos: ${this._state.score}`,
+      `Pontos: ${this._state.score}  |  Descobertas: ${this._state.discoveredCount}`,
       { fontSize: '14px', fontFamily: 'monospace', color: '#aaaaaa' }
     );
 

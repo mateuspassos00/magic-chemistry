@@ -45,7 +45,7 @@ export default class MenuScene extends Phaser.Scene {
 
     // --- Score display (persists if player returns to menu) ---
     const state = this.registry.get('gameState');
-    this.add.text(16, height - 28, `Descobertas: ${state.discoveredCount}  |  Pontos: ${state.score}`, {
+    this.add.text(16, height - 28, `Pontos: ${state.score}  |  Descobertas: ${state.discoveredCount}`, {
       fontSize: '14px', fontFamily: 'monospace', color: '#aaaaaa',
     });
   }
