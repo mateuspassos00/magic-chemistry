@@ -28,8 +28,7 @@ export default class ResultScene extends Phaser.Scene {
     const cardW = 460, cardH = 360;
     const cardX = width / 2, cardY = height / 2;
 
-    this.add.rectangle(cardX, cardY, cardW, cardH, 0xffffff)
-      .setStrokeStyle(2, 0xdddddd);
+    this.add.image(cardX, cardY, 'result_card').setDisplaySize(cardW + 30, cardH + 30);
 
     // --- Stars ---
     const starSpacing = 54;
@@ -43,29 +42,32 @@ export default class ResultScene extends Phaser.Scene {
     }
 
     // --- Formula + name ---
-    this.add.text(cardX, cardY - 130, `${recipe.label} — ${recipe.formula}`, {
+    // this.add.text(cardX, cardY - 130, `${recipe.label} — ${recipe.formula}`, {
+    //   fontSize: '20px', fontFamily: 'monospace', color: '#111111', fontStyle: 'bold',
+    // }).setOrigin(0.5);
+
+    this.add.text(cardX, cardY - 140, `${recipe.label}`, {
       fontSize: '20px', fontFamily: 'monospace', color: '#111111', fontStyle: 'bold',
     }).setOrigin(0.5);
 
+    this.add.text(cardX, cardY - 115, `${recipe.formula}`, {
+      fontSize: '14px', fontFamily: 'monospace', color: '#111111',
+    }).setOrigin(0.5);
+
     if (this._isNew) {
-      this.add.text(cardX, cardY - 100, '✨ Nova descoberta!', {
+      this.add.text(cardX, cardY - 95, '✨ Nova descoberta!', {
         fontSize: '13px', fontFamily: 'monospace', color: '#e67e22',
       }).setOrigin(0.5);
     }
 
     // --- Description ---
     this.add.text(cardX, cardY - 30, recipe.description, {
-      fontSize: '14px', fontFamily: 'monospace', color: '#333333',
+      fontSize: '14px', fontFamily: 'monospace', color: '#111111',
       wordWrap: { width: cardW - 48 }, align: 'center', lineSpacing: 6,
     }).setOrigin(0.5);
 
-    // --- Result image ---
-    // If you have result images loaded, replace the rectangle:
-    // this.add.image(cardX, cardY + 80, recipe.image).setDisplaySize(140, 70);
-    this.add.rectangle(cardX, cardY + 90, 200, 80, 0xd0eaf8);
-    this.add.text(cardX, cardY + 90, `[imagem: ${recipe.result}]`, {
-      fontSize: '11px', fontFamily: 'monospace', color: '#666666',
-    }).setOrigin(0.5);
+    // --- Result image --- 140x70
+    this.add.image(cardX, cardY + 80, recipe.image).setDisplaySize(210, 105);   
 
     // --- Success animation ---
     this._playSuccessParticles(cardX, cardY - cardH / 2);

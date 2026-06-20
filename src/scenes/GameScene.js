@@ -17,13 +17,18 @@ export default class GameScene extends Phaser.Scene {
   preload() {    
     this.load.image('lab_bg',      'assets/sprites/bg.png');
     this.load.image('inventory',      'assets/sprites/inventory.png');
+    this.load.image('result_card', 'assets/sprites/result_card.png');
+    
+    // CAULDRON + EFFECTS
     this.load.image('cauldron',    'assets/sprites/cauldron.png');
     this.load.image('bubbles',    'assets/sprites/bubbles.png');
     this.load.image('particle', 'assets/sprites/particle.png');
+    
+    // POTIONS
     this.load.image('potion_green', 'assets/sprites/Bubbly Brew Bottle - GREEN - 0000.png');
     this.load.image('potion_blue', 'assets/sprites/Big Vial - BLUE - 0000.png');
     this.load.image('potion_red', 'assets/sprites/Encased Potion - BROWN_RED - 0000.png');
-    this.load.image('potion_pink', 'assets/sprites/Large Tonic - PINK - 0000.png');
+    this.load.image('potion_pink', 'assets/sprites/red_diy.png');
     this.load.image('potion_black', 'assets/sprites/Round Potion - BLACK - 0000.png');
     this.load.image('potion_yellow', 'assets/sprites/Small Vial - YELLOW - 0000.png');
     this.load.image('potion_purple', 'assets/sprites/Large Jar - PURPLE - 0000.png');
@@ -32,10 +37,24 @@ export default class GameScene extends Phaser.Scene {
     this.load.image('potion_white2', 'assets/sprites/Large Bottle - BLACK - 0000.png');
     this.load.image('potion_silver', 'assets/sprites/Small Vial - ORANGE - 0000.png');
     this.load.image('potion_orange', 'assets/sprites/Encased Potion - LIME_PURPLE - 0000.png');
-    this.load.image('potion_ltblue', 'assets/sprites/Large Bottle - RED - 0000.png');
+    this.load.image('potion_ltblue', 'assets/sprites/green_diy.png');
     this.load.image('potion_ltgrey', 'assets/sprites/Bubbly Brew Bottle - GREEN - 0000.png');
     this.load.image('potion_grey', 'assets/sprites/Bubbly Brew Bottle - BROWN - 0000.png');
-    this.load.image('potion_beige', 'assets/sprites/Large Bottle - RED - 0000.png');
+    this.load.image('potion_beige', 'assets/sprites/blue_diy.png');
+
+    // SOLUTIONS
+    this.load.image('result_nacl', 'assets/solutions/nacl.jpg');
+    this.load.image('result_na2so4', 'assets/solutions/sodium_sulphate.jpg');
+    this.load.image('result_nh4cl', 'assets/solutions/ammonium_chloride.jpg');
+    this.load.image('result_agcl', 'assets/solutions/silver_chloride.jpg');
+    this.load.image('result_pbi2', 'assets/solutions/lead_iodide.jpg');
+    this.load.image('result_baso4', 'assets/solutions/barium_sulphate.jpg');
+    this.load.image('result_cu_oh_2', 'assets/solutions/copper_hydroxide.jpg');
+    this.load.image('result_feso4_cu', 'assets/solutions/copper_redox.jpg');
+    this.load.image('result_mn2_o2', 'assets/solutions/permanganate_decomp.jpg');
+    this.load.image('result_cu_complex', 'assets/solutions/copper_sulphate_ammonia.jpg');
+    this.load.image('result_co2_gas', 'assets/solutions/sodium_carbonate_sulfuric_acid.jpg');
+
   }
 
   create() {
@@ -176,24 +195,29 @@ export default class GameScene extends Phaser.Scene {
     const icon = this.add.sprite(x - 30, y, element.sprite)
       .setInteractive({ useHandCursor: true });
 
+    const index_list = [3,9,12]; // List of indexes to scale down the icons
+    if (index_list.includes(index)) icon.setScale(0.1);
+
     const label = this.add.text(x + 6, y, element.label, {
       fontSize: '11px', fontFamily: 'monospace', color: '#eeeeee', wordWrap: { width: 90 },
     }).setOrigin(0, 0.5);
 
     this._inventoryContainer.add([icon, label]);
 
-    icon.on('pointerover', () => this._showTooltip(element.label, x + 50, y));
-    icon.on('pointerout',  () => this._hideTooltip());
+    // icon.on('pointerover', () => this._showTooltip(element.label, x + 50, y));
+    // icon.on('pointerout',  () => this._hideTooltip());
     icon.on('pointerdown', (pointer) => this._startDrag(pointer, element, x - 30, y));
 
     this._elementObjects.push({ element, icon, label });
   }
 
   _startDrag(pointer, element, originX, originY) {
-    // Create a temporary drag ghost
-    // const ghost = this.add.rectangle(originX, originY, 36, 36, element.tint, 0.85)
-    const ghost = this.add.sprite(originX, originY, element.sprite)
-      .setDepth(10);
+    // Create a temporary drag ghost    
+    const ghost = this.add.sprite(originX + 100000, originY + 100000, element.sprite)
+      .setDepth(10);    
+
+    const ids_to_scale = ['nh3', 'na2co3', 'h2o2'];
+    if (ids_to_scale.includes(element.id)) ghost.setScale(0.1);
 
     this._dragging = { element, ghost, originX, originY };
 
@@ -224,13 +248,15 @@ export default class GameScene extends Phaser.Scene {
       ghost.destroy();
     } else {
       // Snap back with a tween
-      this.tweens.add({
-        targets: ghost,
-        x: originX, y: originY,
-        duration: 200,
-        ease: 'Back.Out',
-        onComplete: () => ghost.destroy(),
-      });
+      // this.tweens.add({
+      //   targets: ghost,
+      //   x: originX, y: originY,
+      //   duration: 200,
+      //   ease: 'Back.Out',
+      //   onComplete: () => ghost.destroy(),
+      // });
+      
+      ghost.destroy();
     }
   }
 

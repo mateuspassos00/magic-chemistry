@@ -35,8 +35,7 @@ export const RECIPES = [
     stars: 1,
     description:
       'Reação de neutralização clássica entre um ácido forte e uma base forte. ' +
-      'O produto é sal de cozinha dissolvido em água. A solução não apresenta cor, ' +
-      'mas libera calor — a reação é exotérmica.',
+      'O produto é sal de cozinha dissolvido em água.',
     image: 'result_nacl',
   },
   {
@@ -48,8 +47,7 @@ export const RECIPES = [
     visual: 'Solução incolor e neutra com liberação de calor.',
     stars: 2,
     description:
-      'O ácido sulfúrico (diprotônico) reage com dois mols de hidróxido de sódio. ' +
-      'Produz sulfato de sódio, usado na indústria têxtil e de papel. ' +
+      'O sulfato de sódio é usado na indústria têxtil e de papel. ' +
       'A reação é altamente exotérmica — cuidado ao manusear H₂SO₄ concentrado.',
     image: 'result_na2so4',
   },
@@ -92,7 +90,6 @@ export const RECIPES = [
     visual: 'Precipitado amarelo-ouro brilhante cai pela solução como flocos de ouro.',
     stars: 3,
     description:
-      'Uma das reações mais visualmente deslumbrantes da química. ' +
       'O iodeto de chumbo(II) forma cristais amarelo-dourados que afundam lentamente, ' +
       'criando o efeito chamado de "chuva de ouro". É usado em pesquisa de células solares.',
     image: 'result_pbi2',
@@ -106,8 +103,7 @@ export const RECIPES = [
     visual: 'Precipitado branco e denso torna a solução leitosa.',
     stars: 2,
     description:
-      'O sulfato de bário é extremamente insolúvel — sua formação é essencialmente irreversível. ' +
-      'Por ser opaco a raios-X e inerte no organismo, é utilizado como contraste em exames ' +
+      'Por ser opaco a raios-X e inerte no organismo, o sulfato de bário é utilizado como contraste em exames ' +
       'radiológicos do trato digestivo.',
     image: 'result_baso4',
   },
@@ -151,8 +147,7 @@ export const RECIPES = [
     stars: 3,
     description:
       'O permanganato de potássio (KMnO₄) é um oxidante forte de cor púrpura intensa. ' +
-      'A água oxigenada o reduz a Mn²⁺ (quase incolor), liberando oxigênio gasoso. ' +
-      'A mudança de cor dramática ilustra reações de oxirredução de forma espetacular.',
+      'A água oxigenada o reduz a Mn²⁺ (quase incolor), liberando oxigênio gasoso.',
     image: 'result_mn2_o2',
   },
   {
