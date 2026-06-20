@@ -76,7 +76,7 @@ export default class GameScene extends Phaser.Scene {
 
     // --- HUD ---
     this._scoreText = this.add.text(16, height - 28,
-      `Pontos: ${this._state.score}  |  Descobertas: ${this._state.discoveredCount}`,
+      `Descobertas: ${this._state.discoveredCount}  |  Pontos: ${this._state.score}`,
       { fontSize: '14px', fontFamily: 'monospace', color: '#aaaaaa' }
     );
 
@@ -87,7 +87,7 @@ export default class GameScene extends Phaser.Scene {
     this.add.text(width - 12, height - 28, '[ Menu ]', {
       fontSize: '14px', fontFamily: 'monospace', color: '#666666',
     }).setOrigin(1, 0).setInteractive({ useHandCursor: true })
-      .on('pointerup', () => this.scene.start('MenuScene'));
+      .on('pointerup', () => this.scene.start('MenuScene'));      
   }
 
   // ─── Inventory panel ────────────────────────────────────────────────────────
