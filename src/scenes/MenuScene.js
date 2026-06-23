@@ -11,6 +11,8 @@ export default class MenuScene extends Phaser.Scene {
     this.load.image('menu_bg', 'assets/sprites/dark_forest.png');
     this.load.image('wizard', 'assets/sprites/wizard.png');
     this.load.image('cat', 'assets/sprites/cat.png');
+    this.load.image('creator1', 'assets/sprites/c1.png');
+    this.load.image('creator2', 'assets/sprites/c2.png');
   }
 
   create() {
@@ -67,18 +69,29 @@ export default class MenuScene extends Phaser.Scene {
     const overlay = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.7)
       .setInteractive();  // blocks clicks through
 
-    const box = this.add.rectangle(width / 2, height / 2, 480, 260, 0x1a1a2e)
+    const box = this.add.rectangle(width / 2, height / 2, 580, 300, 0x1a1a2e)
       .setStrokeStyle(2, 0xf5d742);
 
-    const text = this.add.text(width / 2, height / 2 - 60,
-      'Magic Chemistry\n\nCombine elementos químicos para\ndescobrir substâncias e aprender\nsobre suas propriedades!\n\nProjeto final — Informática na Educação',
-      { fontSize: '14px', fontFamily: 'monospace', color: '#ffffff', align: 'center' }
-    ).setOrigin(0.5);
+    const text = this.add.text(width / 2, height / 2 - 110, 'Criadores', {
+      fontSize: '21px',
+      fontFamily: 'monospace',
+      color: '#f5d742',
+      stroke: '#000000',
+      strokeThickness: 6,
+    }).setOrigin(0.5);
+    
+    // const text = this.add.text(width / 2, height / 2 - 60,
+    //   'Magic Chemistry\n\nCombine elementos químicos para\ndescobrir substâncias e aprender\nsobre suas propriedades!\n\nProjeto final — Informática na Educação',
+    //   { fontSize: '14px', fontFamily: 'monospace', color: '#ffffff', align: 'center' }
+    // ).setOrigin(0.5);
+
+    const c1 = this.add.image(width / 2 - 200, height / 2, 'creator1').setDisplaySize(130, 140);
+    const c2 = this.add.image(width / 2 - 50,height / 2, 'creator2').setDisplaySize(130, 140);
 
     const close = this.add.text(width / 2, height / 2 + 100, '[ Fechar ]', {
       fontSize: '16px', fontFamily: 'monospace', color: '#f5d742',
     }).setOrigin(0.5).setInteractive({ useHandCursor: true });
 
-    close.on('pointerup', () => { overlay.destroy(); box.destroy(); text.destroy(); close.destroy(); });
+    close.on('pointerup', () => { overlay.destroy(); box.destroy(); text.destroy(); close.destroy(); c1.destroy(); c2.destroy()});
   }
 }

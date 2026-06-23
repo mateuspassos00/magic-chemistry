@@ -47,11 +47,11 @@ export default class ResultScene extends Phaser.Scene {
     // }).setOrigin(0.5);
 
     this.add.text(cardX, cardY - 140, `${recipe.label}`, {
-      fontSize: '20px', fontFamily: 'monospace', color: '#111111', fontStyle: 'bold',
+      fontSize: '20px', fontFamily: 'monospace', color: '#ebb41e', fontStyle: 'bold',
     }).setOrigin(0.5);
 
     this.add.text(cardX, cardY - 115, `${recipe.formula}`, {
-      fontSize: '14px', fontFamily: 'monospace', color: '#111111',
+      fontSize: '16px', fontFamily: 'monospace', color: '#111111', fontStyle: 'bold',
     }).setOrigin(0.5);
 
     if (this._isNew) {
