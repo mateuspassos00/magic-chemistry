@@ -48,7 +48,7 @@ export default class MenuScene extends Phaser.Scene {
     // --- Score display (persists if player returns to menu) ---
     const state = this.registry.get('gameState');
     this.add.text(16, height - 28, `Pontos: ${state.score}  |  Descobertas: ${state.discoveredCount}`, {
-      fontSize: '14px', fontFamily: 'monospace', color: '#aaaaaa',
+      fontSize: '14px', fontFamily: 'monospace', color: '#f5d742',
     });
   }
 
@@ -69,7 +69,7 @@ export default class MenuScene extends Phaser.Scene {
     const overlay = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.7)
       .setInteractive();  // blocks clicks through
 
-    const box = this.add.rectangle(width / 2, height / 2, 580, 300, 0x1a1a2e)
+    const box = this.add.rectangle(width / 2, height / 2, 580, 330, 0x1a1a2e)
       .setStrokeStyle(2, 0xf5d742);
 
     const text = this.add.text(width / 2, height / 2 - 110, 'Criadores', {
@@ -85,13 +85,42 @@ export default class MenuScene extends Phaser.Scene {
     //   { fontSize: '14px', fontFamily: 'monospace', color: '#ffffff', align: 'center' }
     // ).setOrigin(0.5);
 
-    const c1 = this.add.image(width / 2 - 200, height / 2, 'creator1').setDisplaySize(130, 140);
-    const c2 = this.add.image(width / 2 - 50,height / 2, 'creator2').setDisplaySize(130, 140);
+    const c1 = this.add.image(width / 2 - 210, height / 2, 'creator1').setDisplaySize(130, 150);
+    const c2 = this.add.image(width / 2 - 65, height / 2, 'creator2').setDisplaySize(130, 150);
 
-    const close = this.add.text(width / 2, height / 2 + 100, '[ Fechar ]', {
+    const name1 = this.add.text(width / 2 - 200, height / 2 + 100, 'Mateus', {
+      fontSize: '16px',
+      fontFamily: 'monospace',
+      color: '#f5d742',
+      stroke: '#000000',
+      strokeThickness: 6,
+    }).setOrigin(0.5);
+    
+    const name2 = this.add.text(width / 2 - 50, height / 2 + 100, 'Gabrielly', {
+      fontSize: '16px',
+      fontFamily: 'monospace',
+      color: '#f5d742',
+      stroke: '#000000',
+      strokeThickness: 6,
+    }).setOrigin(0.5);
+
+    const about_text = this.add.text(width / 2 + 150, height / 2,
+        'Jogo desenvolvido por Mateus\ne Gabrielly para o projeto\nfinal da disciplina' +         
+        ' de\nInformática na Educação, 2026.', {
+      fontSize: '14px',
+      fontFamily: 'monospace',
+      color: '#f5d742',
+      stroke: '#000000',
+      strokeThickness: 6,
+    }).setOrigin(0.5);
+    
+    const close = this.add.text(width / 2, height / 2 + 140, '[ Fechar ]', {
       fontSize: '16px', fontFamily: 'monospace', color: '#f5d742',
     }).setOrigin(0.5).setInteractive({ useHandCursor: true });
 
-    close.on('pointerup', () => { overlay.destroy(); box.destroy(); text.destroy(); close.destroy(); c1.destroy(); c2.destroy()});
+    close.on('pointerup', () => { overlay.destroy(); box.destroy(); text.destroy();
+                                  close.destroy(); c1.destroy(); c2.destroy();
+                                  name1.destroy(); name2.destroy(); about_text.destroy()
+                                });
   }
 }

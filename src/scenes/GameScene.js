@@ -77,7 +77,7 @@ export default class GameScene extends Phaser.Scene {
     // --- HUD ---
     this._scoreText = this.add.text(16, height - 28,
       `Pontos: ${this._state.score}  |  Descobertas: ${this._state.discoveredCount}`,
-      { fontSize: '14px', fontFamily: 'monospace', color: '#aaaaaa' }
+      { fontSize: '14px', fontFamily: 'monospace', color: '#f5d742' }
     );
 
     // --- Brew button ---
@@ -85,7 +85,7 @@ export default class GameScene extends Phaser.Scene {
 
     // --- Back to menu ---
     this.add.text(width - 12, height - 28, '[ Menu ]', {
-      fontSize: '14px', fontFamily: 'monospace', color: '#666666',
+      fontSize: '14px', fontFamily: 'monospace', color: '#f5d742',
     }).setOrigin(1, 0).setInteractive({ useHandCursor: true })
       .on('pointerup', () => this.scene.start('MenuScene'));      
   }
@@ -328,7 +328,7 @@ export default class GameScene extends Phaser.Scene {
 
     // Clear button
     const clr = this.add.text(bx, by + 36, '[ Limpar caldeirão ]', {
-      fontSize: '12px', fontFamily: 'monospace', color: '#888888',
+      fontSize: '12px', fontFamily: 'monospace', color: '#f5d742',
     }).setOrigin(0.5).setInteractive({ useHandCursor: true });
 
     clr.on('pointerup', () => {
