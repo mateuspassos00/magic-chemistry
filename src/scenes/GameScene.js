@@ -361,9 +361,13 @@ export default class GameScene extends Phaser.Scene {
       targets: flash, alpha: 0, duration: 600,
       onComplete: () => flash.destroy(),
     });
-    this.add.text(CAULDRON_X, CAULDRON_Y - 80, 'Combinação inválida!', {
-      fontSize: '14px', fontFamily: 'monospace', color: '#ff6666',
+    const failText = this.add.text(CAULDRON_X, CAULDRON_Y - 130, 'Combinação inválida!', {
+      fontSize: '16px', fontFamily: 'monospace', color: '#ff6666', fontStyle: 'bold'
     }).setOrigin(0.5).setDepth(5);
+    this.tweens.add({
+      targets: failText, alpha: 0, duration: 3000,
+      onComplete: () => failText.destroy(),
+    });
   }
 
   _updateHUD() {
