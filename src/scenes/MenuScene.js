@@ -96,7 +96,7 @@ export default class MenuScene extends Phaser.Scene {
       strokeThickness: 6,
     }).setOrigin(0.5);
     
-    const name2 = this.add.text(width / 2 - 50, height / 2 + 100, 'Gabrielly', {
+    const name2 = this.add.text(width / 2 - 50, height / 2 + 100, 'Gabrieli', {
       fontSize: '16px',
       fontFamily: 'monospace',
       color: '#f5d742',
@@ -105,7 +105,7 @@ export default class MenuScene extends Phaser.Scene {
     }).setOrigin(0.5);
 
     const about_text = this.add.text(width / 2 + 150, height / 2,
-        'Jogo desenvolvido por Mateus\ne Gabrielly para o projeto\nfinal da disciplina' +         
+        'Jogo desenvolvido por Mateus\ne Gabrieli para o projeto\nfinal da disciplina' +         
         ' de\nInformática na Educação, 2026.', {
       fontSize: '14px',
       fontFamily: 'monospace',
